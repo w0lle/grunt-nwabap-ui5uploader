@@ -93,7 +93,7 @@ Defines the base folder which contains the sources (for instance 'webapp').
 #### options.resources.src
 Type: `String` or `array of String` 
 
-Defines files for upload (for instance '**/\*.*');
+Defines files for upload.
 
 ### Usage Examples
 
