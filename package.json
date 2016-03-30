@@ -1,7 +1,7 @@
 {
   "name": "grunt-nwabap-ui5uploader",
   "description": "UI5 source upload to SAP NetWeaver ABAP",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/pfefferf/grunt-nwabap-ui5uploader",
   "author": {
     "name": "Florian Pfeffer",
@@ -36,7 +36,7 @@
     "SAP NetWeaver ABAP",
     "UI5 Repository",
     "SAPUI5",
-    "openUI5"
+    "OpenUI5"
   ],
   "dependencies": {
     "async": "^1.5.2",

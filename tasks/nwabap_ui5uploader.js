@@ -8,7 +8,6 @@
 
 'use strict';
 
-var fs = require('fs');
 var FileStore = require('./lib/filestore.js');
 
 module.exports = function (grunt) {
