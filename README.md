@@ -88,7 +88,9 @@ Defines the transport number which logs the changes. For the transport number it
 #### options.resources.cwd
 Type: `String`
 
-Defines the base folder which contains the sources (for instance 'webapp').
+Defines the base folder which contains the sources (for instance 'build'). It's important not to use everything from you ``webapp`` folder, because some directories in it should not be packaged and uploaded into an BSP application. To create a build, just use another grunt task to copy the important files to ``build`` folder. In addition you can use [openui5_preload]  (https://github.com/SAP/grunt-openui5#openui5_preload) task from ``grunt-openui5`` plugin to create a component preload file.
+
+When you're using WebIDE templates, folders like ``localService`` and ``test`` are created automatically to support mockdata. These files should not be uploaded.
 
 #### options.resources.src
 Type: `String` or `array of String` 
@@ -114,7 +116,7 @@ grunt.initConfig({
         pwd: sPwd
       }
     },
-    upload_webapp: {
+    uploadBuild: {
       options: {
         ui5: {
            package: '$TMP',
@@ -122,7 +124,7 @@ grunt.initConfig({
            bspcontainer_text: 'UI5 upload local objects'
         },
         resources: {
-          cwd: 'webapp',
+          cwd: 'your-build-folder',
           src: '**/*.*'
         }
       }
@@ -148,7 +150,7 @@ grunt.initConfig({
         pwd: sPwd
       }
     },
-    upload_webapp: {
+    uploadBuild: {
       options: {
         ui5: {
            package: 'ZZ_UI5_REPO',
@@ -157,7 +159,7 @@ grunt.initConfig({
            transportno: 'DEVK900000'
         },
         resources: {
-          cwd: 'webapp',
+          cwd: 'your-build-folder',
           src: '**/*.*'
         }
       }
@@ -174,7 +176,7 @@ var sPwd = grunt.option('pwd');
 
 grunt.initConfig({
   nwabap_ui5uploader: {
-    upload_webapp_740: {
+    uploadBuild740: {
       options: {
         conn: {
           server: 'http://myserver740:8000',
@@ -190,12 +192,12 @@ grunt.initConfig({
            transportno: 'DEVK900000'
         },
         resources: {
-          cwd: 'webapp',
+          cwd: 'your-build-folder',
           src: '**/*.*'
         }
       }
     },
-    upload_webapp_750: {
+    uploadBuild750: {
       options: {
         conn: {
           server: 'http://myserver750:8000',
@@ -211,7 +213,7 @@ grunt.initConfig({
            transportno: 'DEVK900000'
         },
         resources: {
-          cwd: 'webapp',
+          cwd: 'your-build-folder2',
           src: '**/*.*'
         }
       }
