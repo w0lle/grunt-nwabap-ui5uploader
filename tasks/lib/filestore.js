@@ -29,7 +29,7 @@ var FileStore = function (oOptions) {
      oOptions
      - conn:server
      - auth:[user, pwd]
-     - ui5:[transportno, package, bspcontainer (max 15 chars), bspcontainer_text]
+     - ui5:[language, transportno, package, bspcontainer (max 15 chars), bspcontainer_text]
      */
 
     // options
@@ -121,7 +121,8 @@ FileStore.prototype.createBSPContainer = function (fnCallback) {
                 '/%20/content?type=folder&isBinary=false' +
                 '&name=' + encodeURIComponent(me._oOptions.ui5.bspcontainer) +
                 '&description=' + encodeURIComponent(me._oOptions.ui5.bspcontainer_text) +
-                '&devclass=' + encodeURIComponent(me._oOptions.ui5.package);
+                '&devclass=' + encodeURIComponent(me._oOptions.ui5.package) +
+                '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -399,7 +400,8 @@ FileStore.prototype.syncFolder = function (sFolder, sModif, fnCallback) {
                 '/' + me._oOptions.ui5.bspcontainer + encodeURIComponent(util.splitIntoPathAndObject(sFolder).path) +
                 '/content?type=folder&isBinary=false' +
                 '&name=' + encodeURIComponent(util.splitIntoPathAndObject(sFolder).obj) +
-                '&devclass=' + encodeURIComponent(me._oOptions.ui5.package);
+                '&devclass=' + encodeURIComponent(me._oOptions.ui5.package) +
+                '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -491,7 +493,8 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                 '&isBinary=' + bBinaryFile +
                 '&name=' + encodeURIComponent(util.splitIntoPathAndObject(sFile).obj) +
                 '&devclass=' + encodeURIComponent(me._oOptions.ui5.package) +
-                '&charset=UTF-8';
+                '&charset=UTF-8' +
+                '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -515,7 +518,8 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                 '/' + me._oOptions.ui5.bspcontainer + encodeURIComponent(sFile) +
                 '/content' +
                 '?isBinary=' + bBinaryFile +
-                '&charset=UTF-8';
+                '&charset=UTF-8' +
+                '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);

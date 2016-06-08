@@ -64,6 +64,12 @@ Type: `String`
 
 Defines the users password for access to the SAP NetWeaver ABAP server. It is not recommended to store the password in the Grunt file. It should be passed as argument. Do also not store the password as not masked value in a CI server environment. Use plugins to create masked variables (for instance the 'Mask Passwords Plugin' for Jenkins).
 
+#### options.ui5.language
+Type: `String`
+Default: `EN`
+
+Defines the objects original language.
+
 #### options.ui5.package
 Type: `String`
 

@@ -20,6 +20,10 @@ module.exports = function (grunt) {
             resources: {}
         });
 
+        if(!oOptions.ui5.language){
+            oOptions.ui5.language = 'EN';
+        }
+
         // checks
         if (!oOptions.resources || !oOptions.resources.cwd || !oOptions.resources.src) {
             grunt.fail.warn('"resources" option not (fully) specified.');
@@ -83,6 +87,7 @@ module.exports = function (grunt) {
                 pwd: oOptions.auth.pwd
             },
             ui5: {
+                language: oOptions.ui5.language.toUpperCase(),
                 transportno: oOptions.ui5.transportno,
                 package: oOptions.ui5.package,
                 bspcontainer: oOptions.ui5.bspcontainer,
