@@ -1,3 +1,11 @@
+## 0.1.5 (2016-06-13)
+
+### Features
+- Option `options.conn.useStrictSSL` steers if a strict SSL mode check has to be executed. In case of self signed certificates it can be set to `false` to allow an upload of files.
+
+### Fixes
+- Correct encoding of namespaces for file upload.
+
 ## 0.1.4 (2016-06-08)
 
 ### Features
