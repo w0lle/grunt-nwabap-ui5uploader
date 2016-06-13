@@ -1,3 +1,8 @@
+## 0.1.6 (2016-06-13)
+
+### Fixes
+- Namespace handling for file comparison.
+
 ## 0.1.5 (2016-06-13)
 
 ### Features
