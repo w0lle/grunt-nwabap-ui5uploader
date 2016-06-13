@@ -24,6 +24,10 @@ module.exports = function (grunt) {
             oOptions.ui5.language = 'EN';
         }
 
+        if(!oOptions.conn.hasOwnProperty('useStrictSSL')){
+            oOptions.conn.useStrictSSL = true;
+        }
+
         // checks
         if (!oOptions.resources || !oOptions.resources.cwd || !oOptions.resources.src) {
             grunt.fail.warn('"resources" option not (fully) specified.');
@@ -80,7 +84,8 @@ module.exports = function (grunt) {
 
         var oFileStoreOptions = {
             conn: {
-                server: oOptions.conn.server
+                server: oOptions.conn.server,
+                useStrictSSL: oOptions.conn.useStrictSSL
             },
             auth: {
                 user: oOptions.auth.user,

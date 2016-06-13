@@ -27,7 +27,7 @@ var SLASH_ESCAPED = '%2f';
 var FileStore = function (oOptions) {
     /*
      oOptions
-     - conn:server
+     - conn:[server, useStrictSSL]
      - auth:[user, pwd]
      - ui5:[language, transportno, package, bspcontainer (max 15 chars), bspcontainer_text]
      */
@@ -59,6 +59,8 @@ FileStore.prototype._sendRequest = function (oRequest, fnRequestCallback) {
     if (this._oOptions.auth) {
         oRequest.auth({user: this._oOptions.auth.user, pass: this._oOptions.auth.pwd});
     }
+
+    oRequest.strictSSL(this._oOptions.conn.useStrictSSL);
 
     oRequest.end(fnRequestCallback);
 };
@@ -397,7 +399,7 @@ FileStore.prototype.syncFolder = function (sFolder, sModif, fnCallback) {
     switch (sModif) {
         case util.MODIDF.create:
             sUrl = me._constructBaseUrl() +
-                '/' + me._oOptions.ui5.bspcontainer + encodeURIComponent(util.splitIntoPathAndObject(sFolder).path) +
+                '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(util.splitIntoPathAndObject(sFolder).path) +
                 '/content?type=folder&isBinary=false' +
                 '&name=' + encodeURIComponent(util.splitIntoPathAndObject(sFolder).obj) +
                 '&devclass=' + encodeURIComponent(me._oOptions.ui5.package) +
@@ -427,7 +429,7 @@ FileStore.prototype.syncFolder = function (sFolder, sModif, fnCallback) {
 
         case util.MODIDF.delete:
             sUrl = me._constructBaseUrl() +
-                '/' + me._oOptions.ui5.bspcontainer + encodeURIComponent(sFolder) +
+                '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(sFolder) +
                 '/content' +
                 '?deleteChildren=true';
 
@@ -488,7 +490,7 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
     switch (sModif) {
         case util.MODIDF.create:
             sUrl = me._constructBaseUrl() +
-                '/' + me._oOptions.ui5.bspcontainer + encodeURIComponent(util.splitIntoPathAndObject(sFile).path) +
+                '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(util.splitIntoPathAndObject(sFile).path) +
                 '/content?type=file' +
                 '&isBinary=' + bBinaryFile +
                 '&name=' + encodeURIComponent(util.splitIntoPathAndObject(sFile).obj) +
@@ -515,7 +517,7 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
 
         case util.MODIDF.update:
             sUrl = me._constructBaseUrl() +
-                '/' + me._oOptions.ui5.bspcontainer + encodeURIComponent(sFile) +
+                '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(sFile) +
                 '/content' +
                 '?isBinary=' + bBinaryFile +
                 '&charset=UTF-8' +
@@ -541,7 +543,7 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
 
         case util.MODIDF.delete:
             sUrl = me._constructBaseUrl() +
-                '/' + me._oOptions.ui5.bspcontainer + encodeURIComponent(sFile) +
+                '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(sFile) +
                 '/content';
 
             if (me._oOptions.ui5.transportno) {
