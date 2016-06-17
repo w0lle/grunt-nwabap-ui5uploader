@@ -221,7 +221,7 @@ FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback) {
                                 var sId = oItem.id;
 
                                 //remove bsp container at the beginning
-                                if(encodeURIComponent(me._oOptions.ui5.bspcontainer).includes('%2F')) {
+                                if(encodeURIComponent(me._oOptions.ui5.bspcontainer).indexOf('%2F') !== -1) {
                                     sId = sId.replace('%2f', '%2F');
                                     sId = sId.replace('%2f', '%2F');
                                 }

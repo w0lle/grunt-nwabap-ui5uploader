@@ -1,3 +1,8 @@
+## 0.1.7 (2016-06-17)
+
+### Fixes
+- Ensure ES 5.1 compatibility.
+
 ## 0.1.6 (2016-06-13)
 
 ### Fixes
