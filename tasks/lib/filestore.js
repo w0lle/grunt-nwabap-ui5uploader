@@ -29,7 +29,7 @@ var FileStore = function (oOptions) {
      oOptions
      - conn:[server, useStrictSSL]
      - auth:[user, pwd]
-     - ui5:[language, transportno, package, bspcontainer (max 15 chars), bspcontainer_text]
+     - ui5:[language, transportno, package, bspcontainer (max 15 chars), bspcontainer_text, calc_appindex]
      */
 
     // options
@@ -150,6 +150,41 @@ FileStore.prototype.createBSPContainer = function (fnCallback) {
             });
         } else {
             fnCallback(oError);
+        }
+    });
+};
+
+/**
+ * Re-calculate SAPUI5 ABAP Repository Application Index
+ * @public
+ * @param {function} fnCallback callback function
+ */
+FileStore.prototype.calcAppIndex = function (fnCallback) {
+
+    if (!this._oOptions.ui5.calc_appindex) {
+        // Option to recalculate the application index is not enabled - simply fire the callback
+        fnCallback(null, null);
+    }
+
+    // Create the URL for appindex recalculation
+    var sUrl = this._oOptions.conn.server + '/sap/bc/adt/filestore/ui5-bsp/appindex/' + encodeURIComponent(this._oOptions.ui5.bspcontainer);
+
+    var oRequest = unirest.post(sUrl);
+    oRequest.headers(
+        {
+            'X-CSRF-Token': this._sCSRFToken,
+            'Content-Type': 'application/octet-stream',
+            'Accept-Language': 'en-EN',
+            'accept': '*/*',
+            'Cookie': this._sSAPCookie
+        }
+    );
+
+    this._sendRequest(oRequest, function (oResponse) {
+        if (oResponse.statusCode === util.HTTPSTAT.ok) {
+            fnCallback(null, oResponse);
+        } else {
+            fnCallback(util.createResponseError(oResponse), oResponse);
         }
     });
 };
@@ -390,6 +425,15 @@ FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback) {
                     fnCallbackAsyncL1(oError, oResult);
                 }
             );
+        },
+
+        // L1, step 5: ensure UI5 Application Index is updated
+        function (fnCallbackAsyncL1) {
+            async.series([
+                me.calcAppIndex.bind(me)
+            ], function (oError, oResult) {
+                fnCallbackAsyncL1(oError, oResult);
+            });
         }
 
     ], function (oError) {
