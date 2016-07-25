@@ -1,3 +1,8 @@
+## 0.1.8 (2016-07-25)
+
+### Features
+- Option `options.ui5.calc_appindex` steers if the SAPUI5 application index is recalculated (program /UI5/APP_INDEX_CALCULATE). Thx to @olirogers for adding this feature.
+
 ## 0.1.7 (2016-06-17)
 
 ### Fixes
