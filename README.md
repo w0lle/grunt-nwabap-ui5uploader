@@ -97,6 +97,13 @@ Optional in case options.ui5.package is set to '$TMP'.
 
 Defines the transport number which logs the changes. For the transport number it would also make sense to pass it via an argument.
 
+#### options.ui5.calc_appindex
+Type: `Boolean`
+Default: `false`
+
+Specify if you require the application index (program /UI5/APP_INDEX_CALCULATE) for the application to be recalculated after the BSP application is uploaded.
+Note: this only works on ADT version 1.30.x or higher (User Interface Add-On 2.0 for SAP NetWeaver).
+
 #### options.resources.cwd
 Type: `String`
 

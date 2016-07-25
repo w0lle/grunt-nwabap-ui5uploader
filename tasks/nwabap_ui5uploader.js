@@ -96,7 +96,8 @@ module.exports = function (grunt) {
                 transportno: oOptions.ui5.transportno,
                 package: oOptions.ui5.package,
                 bspcontainer: oOptions.ui5.bspcontainer,
-                bspcontainer_text: oOptions.ui5.bspcontainer_text
+                bspcontainer_text: oOptions.ui5.bspcontainer_text,
+                calc_appindex: !!oOptions.ui5.calc_appindex
             }
         };
 
