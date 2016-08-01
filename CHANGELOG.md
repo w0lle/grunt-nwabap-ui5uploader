@@ -1,3 +1,8 @@
+## 0.1.9 (2016-08-01)
+
+### Features
+- Option `options.conn.client` added to be able to specify a SAP client (in case no default client is maintained in system).
+
 ## 0.1.8 (2016-07-25)
 
 ### Features

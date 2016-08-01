@@ -54,6 +54,11 @@ Type: `String`
 
 Defines SAP NetWeaver ABAP server (for instance 'http://myserver:8000').
 
+#### options.conn.client
+Type: `String`
+
+Optional parameter to specify the client (transferred as sap-client URL parameter). In case the option is not specified the default client is used if specified.
+
 #### options.conn.useStrictSSL
 Type: `Boolean`
 Default: `true`
