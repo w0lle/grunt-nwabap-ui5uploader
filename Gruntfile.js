@@ -44,7 +44,7 @@ module.exports = function (grunt) {
                     ui5: {
                         package: '$TMP',
                         bspcontainer: 'ZZ_GUI5UP_TMP',
-                        bspcontainer_text: 'Test grunt UI5 upload'
+                        bspcontainer_text: 'Test Grunt UI5 upload'
                     },
                     resources: {
                         cwd: 'test/webapp',
@@ -57,7 +57,7 @@ module.exports = function (grunt) {
                     ui5: {
                         package: '$TMP',
                         bspcontainer: 'ZZ_GUI5UP_TMP',
-                        bspcontainer_text: 'Test grunt UI5 upload'
+                        bspcontainer_text: 'Test Grunt UI5 upload'
                     },
                     resources: {
                         cwd: 'test/webapp_empty',

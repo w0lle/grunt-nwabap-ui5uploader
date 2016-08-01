@@ -85,6 +85,7 @@ module.exports = function (grunt) {
         var oFileStoreOptions = {
             conn: {
                 server: oOptions.conn.server,
+                client: oOptions.conn.client,
                 useStrictSSL: oOptions.conn.useStrictSSL
             },
             auth: {
@@ -115,7 +116,7 @@ module.exports = function (grunt) {
             }
 
             done();
-        });
+        }, grunt);
     });
 
 };

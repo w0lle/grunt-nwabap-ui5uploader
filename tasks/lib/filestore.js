@@ -27,7 +27,7 @@ var SLASH_ESCAPED = '%2f';
 var FileStore = function (oOptions) {
     /*
      oOptions
-     - conn:[server, useStrictSSL]
+     - conn:[server, client, useStrictSSL]
      - auth:[user, pwd]
      - ui5:[language, transportno, package, bspcontainer (max 15 chars), bspcontainer_text, calc_appindex]
      */
@@ -99,6 +99,11 @@ FileStore.prototype._determineCSRFToken = function (fnCallback) {
  */
 FileStore.prototype.getMetadataBSPContainer = function (fnCallback) {
     var sUrl = this._constructBaseUrl() + '/' + encodeURIComponent(this._oOptions.ui5.bspcontainer);
+
+    if (this._oOptions.conn.client) {
+        sUrl += '&sap-client=' + encodeURIComponent(this._oOptions.conn.client);
+    }
+
     var oRequest = unirest.get(sUrl);
     this._sendRequest(oRequest, function (oResponse) {
         fnCallback(util.createResponseError(oResponse), oResponse);
@@ -125,6 +130,10 @@ FileStore.prototype.createBSPContainer = function (fnCallback) {
                 '&description=' + encodeURIComponent(me._oOptions.ui5.bspcontainer_text) +
                 '&devclass=' + encodeURIComponent(me._oOptions.ui5.package) +
                 '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
+
+            if (me._oOptions.conn.client) {
+                sUrl += '&sap-client=' + encodeURIComponent(me._oOptions.conn.client);
+            }
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -162,12 +171,18 @@ FileStore.prototype.createBSPContainer = function (fnCallback) {
 FileStore.prototype.calcAppIndex = function (fnCallback) {
 
     if (!this._oOptions.ui5.calc_appindex) {
-        // Option to recalculate the application index is not enabled - simply fire the callback
+        // option to recalculate the application index is not enabled - simply fire the callback
         fnCallback(null, null);
     }
 
-    // Create the URL for appindex recalculation
-    var sUrl = this._oOptions.conn.server + '/sap/bc/adt/filestore/ui5-bsp/appindex/' + encodeURIComponent(this._oOptions.ui5.bspcontainer);
+    // create the URL for appindex recalculation
+    var sUrl = this._oOptions.conn.server +  
+               '/sap/bc/adt/filestore/ui5-bsp/appindex/' + 
+               encodeURIComponent(this._oOptions.ui5.bspcontainer);
+
+    if (this._oOptions.conn.client) {
+        sUrl += '?sap-client=' + encodeURIComponent(this._oOptions.conn.client);
+    }
 
     var oRequest = unirest.post(sUrl);
     oRequest.headers(
@@ -195,8 +210,9 @@ FileStore.prototype.calcAppIndex = function (fnCallback) {
  * @param {Array} aFiles Files to be synchronized with server
  * @param {string} sCwd base folder
  * @param {function} fnCallback callback function
+ * @param {Object} oGrunt Grunt object
  */
-FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback) {
+FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback, oGrunt) {
     var aArtifactsLocal = util.structureResolve(aFiles, '/');
     var aArtifactsServer = [];
     var aArtifactsSync = [];
@@ -221,7 +237,13 @@ FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback) {
                         function (fnCallbackAsyncL3) {
                             var sFolder = aFolders.shift();
 
-                            var oRequest = unirest.get(me._constructBaseUrl() + '/' + encodeURIComponent(sFolder) + '/content');
+                            var sUrl = me._constructBaseUrl() + '/' + encodeURIComponent(sFolder) + '/content';
+
+                            if (me._oOptions.conn.client) {
+                                sUrl += '?sap-client=' + encodeURIComponent(me._oOptions.conn.client);
+                            }
+
+                            var oRequest = unirest.get(sUrl);
 
                             me._sendRequest(oRequest, function (oResponse) {
                                 if (oResponse.statusCode === util.HTTPSTAT.not_found) { //BSP container does not exist
@@ -348,6 +370,10 @@ FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback) {
                 return oItem;
             });
 
+            if(oGrunt){
+                oGrunt.verbose.writeln('Artifacts to Sync: ', aArtifactsSync);
+            }
+
             // sort
             var aDeleteFiles = aArtifactsSync.filter(function (oItem) {
                 return (oItem.type === util.OBJECT_TYPE.file && oItem.modif === util.MODIDF.delete);
@@ -462,6 +488,10 @@ FileStore.prototype.syncFolder = function (sFolder, sModif, fnCallback) {
                 '&name=' + encodeURIComponent(util.splitIntoPathAndObject(sFolder).obj) +
                 '&devclass=' + encodeURIComponent(me._oOptions.ui5.package) +
                 '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
+                            
+            if (me._oOptions.conn.client) {
+                sUrl += '&sap-client=' + encodeURIComponent(me._oOptions.conn.client);
+            }
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -490,6 +520,10 @@ FileStore.prototype.syncFolder = function (sFolder, sModif, fnCallback) {
                 '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(sFolder) +
                 '/content' +
                 '?deleteChildren=true';
+
+            if (me._oOptions.conn.client) {
+                sUrl += '&sap-client=' + encodeURIComponent(me._oOptions.conn.client);
+            }
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -556,6 +590,10 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                 '&charset=UTF-8' +
                 '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
 
+            if (me._oOptions.conn.client) {
+                sUrl += '&sap-client=' + encodeURIComponent(me._oOptions.conn.client);
+            }
+
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
             }
@@ -581,6 +619,10 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                 '&charset=UTF-8' +
                 '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
 
+            if (me._oOptions.conn.client) {
+                sUrl += '&sap-client=' + encodeURIComponent(me._oOptions.conn.client);
+            }
+
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
             }
@@ -600,12 +642,22 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
             break;
 
         case util.MODIDF.delete:
+            var bParamAdded;
+
             sUrl = me._constructBaseUrl() +
                 '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(sFile) +
                 '/content';
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '?corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
+                bParamAdded = true;
+            }else{
+                bParamAdded = false;
+            }
+
+            if (me._oOptions.conn.client) {
+                sUrl = (bParamAdded === true) ? (sUrl + '&') : (sUrl + '?');
+                sUrl += 'sap-client=' + encodeURIComponent(me._oOptions.conn.client);
             }
 
             oRequest = unirest.delete(sUrl);
