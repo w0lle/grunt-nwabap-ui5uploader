@@ -1,3 +1,8 @@
+## 0.1.10 (2016-08-04)
+
+### Fixes
+- Crash caused by empty files fixed.
+
 ## 0.1.9 (2016-08-01)
 
 ### Features

@@ -570,11 +570,11 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
 
     var oRequest = null;
     var sUrl = null;
-    var sFileContent = '';
+    var oFileContent = null;
     var bBinaryFile = false;
 
     if (sModif === util.MODIDF.create || sModif === util.MODIDF.update) {
-        sFileContent = fs.readFileSync(sCwd + sFile);
+        oFileContent = fs.readFileSync(sCwd + sFile);
 
         bBinaryFile = (isBinaryFile.sync(sCwd + sFile)) ? true : false;
     }
@@ -607,7 +607,12 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                     'accept': '*/*',
                     'Cookie': me._sSAPCookie
                 });
-            oRequest.send(sFileContent);
+
+            if(oFileContent.length > 0){
+                oRequest.send(oFileContent);
+            }else{
+                oRequest.send(' ');
+            }
 
             break;
 
@@ -637,7 +642,12 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                     'Cookie': me._sSAPCookie,
                     'If-Match': '*'
                 });
-            oRequest.send(sFileContent);
+
+            if(oFileContent.length > 0){
+                oRequest.send(oFileContent);
+            }else{
+                oRequest.send(' ');
+            }
 
             break;
 
