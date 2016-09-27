@@ -25,7 +25,7 @@
     "node": ">= 0.12.10"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt jshint"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
