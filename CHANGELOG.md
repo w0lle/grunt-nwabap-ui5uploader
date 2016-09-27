@@ -1,3 +1,8 @@
+## 0.1.11 (2016-09-27)
+
+### General
+- Added Travis CI support.
+
 ## 0.1.10 (2016-08-04)
 
 ### Fixes
