@@ -1,3 +1,11 @@
+## 0.1.12 (2016-09-28)
+
+### General
+- Update dependency to Unirest 0.5.1
+
+### Fixes
+- Client parameter handling
+
 ## 0.1.11 (2016-09-27)
 
 ### General

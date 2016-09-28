@@ -56,11 +56,19 @@ FileStore.prototype._constructBaseUrl = function () {
  * @param {function} fnRequestCallback Callback for unirest request
  */
 FileStore.prototype._sendRequest = function (oRequest, fnRequestCallback) {
-    if (this._oOptions.auth) {
-        oRequest.auth({user: this._oOptions.auth.user, pass: this._oOptions.auth.pwd});
+    var me = this;
+
+    if (me._oOptions.auth) {
+        oRequest.auth({user: me._oOptions.auth.user, pass: me._oOptions.auth.pwd});
     }
 
-    oRequest.strictSSL(this._oOptions.conn.useStrictSSL);
+    oRequest.strictSSL(me._oOptions.conn.useStrictSSL);
+
+    if (me._oOptions.conn.client) {
+        oRequest.query({
+            'sap-client': encodeURIComponent(me._oOptions.conn.client)
+        });
+    }
 
     oRequest.end(fnRequestCallback);
 };
@@ -100,10 +108,6 @@ FileStore.prototype._determineCSRFToken = function (fnCallback) {
 FileStore.prototype.getMetadataBSPContainer = function (fnCallback) {
     var sUrl = this._constructBaseUrl() + '/' + encodeURIComponent(this._oOptions.ui5.bspcontainer);
 
-    if (this._oOptions.conn.client) {
-        sUrl += '&sap-client=' + encodeURIComponent(this._oOptions.conn.client);
-    }
-
     var oRequest = unirest.get(sUrl);
     this._sendRequest(oRequest, function (oResponse) {
         fnCallback(util.createResponseError(oResponse), oResponse);
@@ -130,10 +134,6 @@ FileStore.prototype.createBSPContainer = function (fnCallback) {
                 '&description=' + encodeURIComponent(me._oOptions.ui5.bspcontainer_text) +
                 '&devclass=' + encodeURIComponent(me._oOptions.ui5.package) +
                 '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
-
-            if (me._oOptions.conn.client) {
-                sUrl += '&sap-client=' + encodeURIComponent(me._oOptions.conn.client);
-            }
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -179,10 +179,6 @@ FileStore.prototype.calcAppIndex = function (fnCallback) {
     var sUrl = this._oOptions.conn.server +  
                '/sap/bc/adt/filestore/ui5-bsp/appindex/' + 
                encodeURIComponent(this._oOptions.ui5.bspcontainer);
-
-    if (this._oOptions.conn.client) {
-        sUrl += '?sap-client=' + encodeURIComponent(this._oOptions.conn.client);
-    }
 
     var oRequest = unirest.post(sUrl);
     oRequest.headers(
@@ -237,11 +233,7 @@ FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback, oGrunt) {
                         function (fnCallbackAsyncL3) {
                             var sFolder = aFolders.shift();
 
-                            var sUrl = me._constructBaseUrl() + '/' + encodeURIComponent(sFolder) + '/content';
-
-                            if (me._oOptions.conn.client) {
-                                sUrl += '?sap-client=' + encodeURIComponent(me._oOptions.conn.client);
-                            }
+                            var sUrl = me._constructBaseUrl() + '/' + encodeURIComponent(sFolder) + '/content';                            
 
                             var oRequest = unirest.get(sUrl);
 
@@ -487,11 +479,7 @@ FileStore.prototype.syncFolder = function (sFolder, sModif, fnCallback) {
                 '/content?type=folder&isBinary=false' +
                 '&name=' + encodeURIComponent(util.splitIntoPathAndObject(sFolder).obj) +
                 '&devclass=' + encodeURIComponent(me._oOptions.ui5.package) +
-                '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
-                            
-            if (me._oOptions.conn.client) {
-                sUrl += '&sap-client=' + encodeURIComponent(me._oOptions.conn.client);
-            }
+                '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);                            
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -520,10 +508,6 @@ FileStore.prototype.syncFolder = function (sFolder, sModif, fnCallback) {
                 '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(sFolder) +
                 '/content' +
                 '?deleteChildren=true';
-
-            if (me._oOptions.conn.client) {
-                sUrl += '&sap-client=' + encodeURIComponent(me._oOptions.conn.client);
-            }
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -590,10 +574,6 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                 '&charset=UTF-8' +
                 '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
 
-            if (me._oOptions.conn.client) {
-                sUrl += '&sap-client=' + encodeURIComponent(me._oOptions.conn.client);
-            }
-
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
             }
@@ -624,10 +604,6 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                 '&charset=UTF-8' +
                 '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
 
-            if (me._oOptions.conn.client) {
-                sUrl += '&sap-client=' + encodeURIComponent(me._oOptions.conn.client);
-            }
-
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
             }
@@ -652,22 +628,12 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
             break;
 
         case util.MODIDF.delete:
-            var bParamAdded;
-
             sUrl = me._constructBaseUrl() +
                 '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(sFile) +
                 '/content';
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '?corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
-                bParamAdded = true;
-            }else{
-                bParamAdded = false;
-            }
-
-            if (me._oOptions.conn.client) {
-                sUrl = (bParamAdded === true) ? (sUrl + '&') : (sUrl + '?');
-                sUrl += 'sap-client=' + encodeURIComponent(me._oOptions.conn.client);
             }
 
             oRequest = unirest.delete(sUrl);
