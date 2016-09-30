@@ -6,6 +6,8 @@
 'grunt-nwabap-ui5uploader' is a Grunt plugin which allows a developer to upload SAPUI5/OpenUI5 sources into a SAP NetWeaver ABAP system as part of the Grunt task chain. The behavior is (or should be) the same than it is known from the SAP Web IDE app deployment option "Deploy to SAPUI5 ABAP Repository" or from the "SAPUI5 ABAP Repository Team Provider" available for Eclipse via the "UI Development Toolkit for HTML5".
 The plugin allows a developer to deploy the sources to a SAP NetWeaver ABAP system by a Grunt task using a different IDE than Eclipse or SAP Web IDE (for instance WebStorm). The main benefit is to integrate the deployment process into a Continuous Integration environment, in which for instance a Jenkins server executes several build steps and finally deploys the sources to a SAP NetWeaver ABAP system if all previous build steps are ok.  
 
+Some further information can be found in the [SAP Community](https://blogs.sap.com/2016/03/25/grunt-plugin-to-upload-ui5-sources-to-netweaver-abap/).
+
 
 ## Getting Started
 
