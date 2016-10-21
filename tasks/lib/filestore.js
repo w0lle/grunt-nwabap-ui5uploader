@@ -630,10 +630,11 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
         case util.MODIDF.delete:
             sUrl = me._constructBaseUrl() +
                 '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(sFile) +
-                '/content';
+                '/content' +
+                '?sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
 
             if (me._oOptions.ui5.transportno) {
-                sUrl += '?corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
+                sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
             }
 
             oRequest = unirest.delete(sUrl);

@@ -1,3 +1,9 @@
+## 0.1.13 (2016-10-21)
+
+### Fixes
+- BSP container length check excludes customer specific namespaces.
+- Deletion requests are fired with sap-language parameter.
+
 ## 0.1.13 (2016-09-30)
 
 ### General

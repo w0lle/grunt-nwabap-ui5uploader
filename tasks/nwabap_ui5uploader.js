@@ -59,8 +59,9 @@ module.exports = function (grunt) {
             return;
         }
 
-        if (oOptions.ui5.bspcontainer.length > 15) {
-            grunt.fail.warn('"ui5.bspcontainer" option must not be longer than 15 characters.');
+        var bspcontainerExclNamespace = oOptions.ui5.bspcontainer.substring(oOptions.ui5.bspcontainer.lastIndexOf('/')+1);
+        if (bspcontainerExclNamespace.length > 15) {
+            grunt.fail.warn('"ui5.bspcontainer" option must not be longer than 15 characters (exclusive customer specific namespace e.g. /YYY/.');
             done();
             return;
         }
