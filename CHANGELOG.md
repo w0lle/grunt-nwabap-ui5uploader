@@ -1,3 +1,8 @@
+## 0.1.15 (2016-10-25)
+
+### General
+- Code simplification regarding sap-language parameter.
+
 ## 0.1.14 (2016-10-21)
 
 ### Fixes

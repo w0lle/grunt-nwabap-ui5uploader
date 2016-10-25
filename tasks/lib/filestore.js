@@ -70,6 +70,12 @@ FileStore.prototype._sendRequest = function (oRequest, fnRequestCallback) {
         });
     }
 
+    if (me._oOptions.ui5.language){
+        oRequest.query({
+            'sap-language': encodeURIComponent(me._oOptions.ui5.language)
+        });        
+    }
+
     oRequest.end(fnRequestCallback);
 };
 
@@ -132,8 +138,7 @@ FileStore.prototype.createBSPContainer = function (fnCallback) {
                 '/%20/content?type=folder&isBinary=false' +
                 '&name=' + encodeURIComponent(me._oOptions.ui5.bspcontainer) +
                 '&description=' + encodeURIComponent(me._oOptions.ui5.bspcontainer_text) +
-                '&devclass=' + encodeURIComponent(me._oOptions.ui5.package) +
-                '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
+                '&devclass=' + encodeURIComponent(me._oOptions.ui5.package);
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -478,8 +483,7 @@ FileStore.prototype.syncFolder = function (sFolder, sModif, fnCallback) {
                 '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(util.splitIntoPathAndObject(sFolder).path) +
                 '/content?type=folder&isBinary=false' +
                 '&name=' + encodeURIComponent(util.splitIntoPathAndObject(sFolder).obj) +
-                '&devclass=' + encodeURIComponent(me._oOptions.ui5.package) +
-                '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);                            
+                '&devclass=' + encodeURIComponent(me._oOptions.ui5.package);                         
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -571,8 +575,7 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                 '&isBinary=' + bBinaryFile +
                 '&name=' + encodeURIComponent(util.splitIntoPathAndObject(sFile).obj) +
                 '&devclass=' + encodeURIComponent(me._oOptions.ui5.package) +
-                '&charset=UTF-8' +
-                '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
+                '&charset=UTF-8';
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -601,8 +604,7 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                 '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(sFile) +
                 '/content' +
                 '?isBinary=' + bBinaryFile +
-                '&charset=UTF-8' +
-                '&sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
+                '&charset=UTF-8';
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -630,11 +632,10 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
         case util.MODIDF.delete:
             sUrl = me._constructBaseUrl() +
                 '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(sFile) +
-                '/content' +
-                '?sap-language=' + encodeURIComponent(me._oOptions.ui5.language);
+                '/content';
 
             if (me._oOptions.ui5.transportno) {
-                sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
+                sUrl += '?corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
             }
 
             oRequest = unirest.delete(sUrl);
