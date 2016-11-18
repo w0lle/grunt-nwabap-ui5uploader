@@ -1,3 +1,11 @@
+## 0.1.16 (2016-11-18)
+
+### General
+- Switched from JSHint to ESLint linting.
+- Support for Node versions < 4.0.0 skipped.
+- Logging changed to an "immediate" logging. Folder/File actions are displayed immediately instead of collecting them. 
+- Slashes at the end of a defined server URL are ignored.
+
 ## 0.1.15 (2016-10-25)
 
 ### General
