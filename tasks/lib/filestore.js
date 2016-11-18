@@ -22,7 +22,6 @@ var SLASH_ESCAPED = '%2f';
  * FileStore constructor
  * @public
  * @param {object} oOptions Options for FileStore
- * @returns {FileStore}
  */
 var FileStore = function (oOptions) {
     /*
@@ -43,7 +42,7 @@ var FileStore = function (oOptions) {
 /**
  * Construct the base Url for server access
  * @private
- * @returns {string}
+ * @return {string} base URL
  */
 FileStore.prototype._constructBaseUrl = function () {
     return this._oOptions.conn.server + FILESTORE_BASE_URL;
@@ -59,7 +58,7 @@ FileStore.prototype._sendRequest = function (oRequest, fnRequestCallback) {
     var me = this;
 
     if (me._oOptions.auth) {
-        oRequest.auth({user: me._oOptions.auth.user, pass: me._oOptions.auth.pwd});
+        oRequest.auth({ user: me._oOptions.auth.user, pass: me._oOptions.auth.pwd });
     }
 
     oRequest.strictSSL(me._oOptions.conn.useStrictSSL);
@@ -70,10 +69,10 @@ FileStore.prototype._sendRequest = function (oRequest, fnRequestCallback) {
         });
     }
 
-    if (me._oOptions.ui5.language){
+    if (me._oOptions.ui5.language) {
         oRequest.query({
             'sap-language': encodeURIComponent(me._oOptions.ui5.language)
-        });        
+        });
     }
 
     oRequest.end(fnRequestCallback);
@@ -181,9 +180,9 @@ FileStore.prototype.calcAppIndex = function (fnCallback) {
     }
 
     // create the URL for appindex recalculation
-    var sUrl = this._oOptions.conn.server +  
-               '/sap/bc/adt/filestore/ui5-bsp/appindex/' + 
-               encodeURIComponent(this._oOptions.ui5.bspcontainer);
+    var sUrl = this._oOptions.conn.server +
+        '/sap/bc/adt/filestore/ui5-bsp/appindex/' +
+        encodeURIComponent(this._oOptions.ui5.bspcontainer);
 
     var oRequest = unirest.post(sUrl);
     oRequest.headers(
@@ -238,7 +237,7 @@ FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback, oGrunt) {
                         function (fnCallbackAsyncL3) {
                             var sFolder = aFolders.shift();
 
-                            var sUrl = me._constructBaseUrl() + '/' + encodeURIComponent(sFolder) + '/content';                            
+                            var sUrl = me._constructBaseUrl() + '/' + encodeURIComponent(sFolder) + '/content';
 
                             var oRequest = unirest.get(sUrl);
 
@@ -260,7 +259,7 @@ FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback, oGrunt) {
                                     var sCurrId = oChild.valueWithPath('atom:id');
                                     var sCurrType = oChild.valueWithPath('atom:category@term');
 
-                                    aArtifactsServer.push({type: sCurrType, id: sCurrId});
+                                    aArtifactsServer.push({ type: sCurrType, id: sCurrId });
 
                                     if (sCurrType === util.OBJECT_TYPE.folder) {
                                         aFolders.push(sCurrId);
@@ -275,7 +274,7 @@ FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback, oGrunt) {
                                 var sId = oItem.id;
 
                                 //remove bsp container at the beginning
-                                if(encodeURIComponent(me._oOptions.ui5.bspcontainer).indexOf('%2F') !== -1) {
+                                if (encodeURIComponent(me._oOptions.ui5.bspcontainer).indexOf('%2F') !== -1) {
                                     sId = sId.replace('%2f', '%2F');
                                     sId = sId.replace('%2f', '%2F');
                                 }
@@ -284,7 +283,7 @@ FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback, oGrunt) {
                                 var aValues = sId.split(SLASH_ESCAPED);
                                 //remove empty values at the beginning (possible in case of a namespace with slashes)
 
-                                if(aValues[0] === '') {
+                                if (aValues[0] === '') {
                                     aValues.shift();
                                 }
 
@@ -367,7 +366,7 @@ FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback, oGrunt) {
                 return oItem;
             });
 
-            if(oGrunt){
+            if (oGrunt) {
                 oGrunt.verbose.writeln('Artifacts to Sync: ', aArtifactsSync);
             }
 
@@ -483,7 +482,7 @@ FileStore.prototype.syncFolder = function (sFolder, sModif, fnCallback) {
                 '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(util.splitIntoPathAndObject(sFolder).path) +
                 '/content?type=folder&isBinary=false' +
                 '&name=' + encodeURIComponent(util.splitIntoPathAndObject(sFolder).obj) +
-                '&devclass=' + encodeURIComponent(me._oOptions.ui5.package);                         
+                '&devclass=' + encodeURIComponent(me._oOptions.ui5.package);
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -591,9 +590,9 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                     'Cookie': me._sSAPCookie
                 });
 
-            if(oFileContent.length > 0){
+            if (oFileContent.length > 0) {
                 oRequest.send(oFileContent);
-            }else{
+            } else {
                 oRequest.send(' ');
             }
 
@@ -621,9 +620,9 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                     'If-Match': '*'
                 });
 
-            if(oFileContent.length > 0){
+            if (oFileContent.length > 0) {
                 oRequest.send(oFileContent);
-            }else{
+            } else {
                 oRequest.send(' ');
             }
 

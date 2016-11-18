@@ -20,11 +20,11 @@ module.exports = function (grunt) {
             resources: {}
         });
 
-        if(!oOptions.ui5.language){
+        if (!oOptions.ui5.language) {
             oOptions.ui5.language = 'EN';
         }
 
-        if(!oOptions.conn.hasOwnProperty('useStrictSSL')){
+        if (!oOptions.conn.hasOwnProperty('useStrictSSL')) {
             oOptions.conn.useStrictSSL = true;
         }
 
@@ -59,7 +59,7 @@ module.exports = function (grunt) {
             return;
         }
 
-        var bspcontainerExclNamespace = oOptions.ui5.bspcontainer.substring(oOptions.ui5.bspcontainer.lastIndexOf('/')+1);
+        var bspcontainerExclNamespace = oOptions.ui5.bspcontainer.substring(oOptions.ui5.bspcontainer.lastIndexOf('/') + 1);
         if (bspcontainerExclNamespace.length > 15) {
             grunt.fail.warn('"ui5.bspcontainer" option must not be longer than 15 characters (exclusive customer specific namespace e.g. /YYY/.');
             done();

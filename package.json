@@ -25,11 +25,12 @@
     "node": ">= 0.12.10"
   },
   "scripts": {
-    "test": "grunt jshint"
+    "test": "grunt eslint"
   },
   "devDependencies": {
+    "eslint-config-google": "^0.7.0",
     "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^1.0.0"
+    "grunt-eslint": "^19.0.0"
   },
   "keywords": [
     "gruntplugin",

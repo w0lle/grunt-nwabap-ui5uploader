@@ -43,7 +43,7 @@ var MODIDF = {
  * Resolves file structure into single folders and files
  * @param {(string|string)} resolve file or file array
  * @param {string} sPathStartWith path has to start with that value
- * @returns {Array} array with resolved folders and files
+ * @return {Array} array with resolved folders and files
  */
 function structureResolve(resolve, sPathStartWith) {
     var aToResolve = [];
@@ -103,7 +103,7 @@ function structureResolve(resolve, sPathStartWith) {
 /**
  * Split a value into the path and object information
  * @param {string} sValue values like /test/test1.txt
- * @returns {{path: string, obj: string}}
+ * @return {{path: string, obj: string}} Path object
  */
 function splitIntoPathAndObject(sValue) {
     var aValues = sValue.split('/');
@@ -121,7 +121,7 @@ function splitIntoPathAndObject(sValue) {
 /**
  *
  * @param {object} oResponse response
- * @returns {string} response error string
+ * @return {string} response error string
  */
 function createResponseError(oResponse) {
     if (oResponse.error) {

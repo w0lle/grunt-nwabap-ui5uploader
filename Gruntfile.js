@@ -17,14 +17,14 @@ module.exports = function (grunt) {
 
     // project config
     grunt.initConfig({
-        jshint: {
-            all: [
+        eslint: {
+            target: [
                 'Gruntfile.js',
                 'tasks/**/*.js',
                 'test/*.js'
             ],
             options: {
-                jshintrc: '.jshintrc'
+                configFile: '.eslintrc.json'
             }
         },
 
@@ -72,12 +72,12 @@ module.exports = function (grunt) {
     grunt.loadTasks('tasks');
 
     // plugins
-    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-eslint');
 
     // register tasks
-    grunt.registerTask('test', ['jshint', 'nwabap_ui5uploader:upload_webapp']);
-    grunt.registerTask('test_empty', ['jshint', 'nwabap_ui5uploader:upload_webapp_empty']);
+    grunt.registerTask('test', ['eslint', 'nwabap_ui5uploader:upload_webapp']);
+    grunt.registerTask('test_empty', ['eslint', 'nwabap_ui5uploader:upload_webapp_empty']);
 
     // register default task
-    grunt.registerTask('default',['test']);
+    grunt.registerTask('default', ['test']);
 };
