@@ -9,10 +9,11 @@
 'use strict';
 
 var FileStore = require('./lib/filestore.js');
+var Logger = require('./lib/logger.js');
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
-    grunt.registerMultiTask('nwabap_ui5uploader', 'UI5 source upload to SAP NetWeaver ABAP', function () {
+    grunt.registerMultiTask('nwabap_ui5uploader', 'UI5 source upload to SAP NetWeaver ABAP', function() {
 
         var done = this.async();
 
@@ -76,7 +77,7 @@ module.exports = function (grunt) {
             cwd: oOptions.resources.cwd,
             filter: 'isFile',
             dot: true
-        }, oOptions.resources.src).forEach(function (sFile) {
+        }, oOptions.resources.src).forEach(function(sFile) {
             aFiles.push(sFile);
         });
 
@@ -103,21 +104,16 @@ module.exports = function (grunt) {
             }
         };
 
-        var oFileStore = new FileStore(oFileStoreOptions);
-        oFileStore.syncFiles(aFiles, oOptions.resources.cwd, function (oError, aArtifactsSync) {
+        var oFileStore = new FileStore(oFileStoreOptions, new Logger(grunt));
+
+        oFileStore.syncFiles(aFiles, oOptions.resources.cwd, function(oError, aArtifactsSync) {
 
             if (oError) {
                 grunt.fail.warn(oError);
             }
 
-            if (aArtifactsSync) {
-                aArtifactsSync.forEach(function (oItem) {
-                    grunt.log.writeln('NW ABAP UI5 Uploader action: ' + oItem.type + ' ' + oItem.id + ' ' + oItem.modif + 'd.');
-                });
-            }
-
             done();
-        }, grunt);
+        });
     });
 
 };

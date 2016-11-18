@@ -22,24 +22,28 @@ var SLASH_ESCAPED = '%2f';
  * FileStore constructor
  * @public
  * @param {object} oOptions Options for FileStore
+ * @param {object} oLogger
  */
-var FileStore = function (oOptions) {
+var FileStore = function (oOptions, oLogger) {
     /*
      oOptions
      - conn:[server, client, useStrictSSL]
      - auth:[user, pwd]
      - ui5:[language, transportno, package, bspcontainer (max 15 chars w/o ns), bspcontainer_text, calc_appindex]
      */
-    this._init(oOptions);
+    this._init(oOptions, oLogger);
 };
 
 /**
  * init
  * @param {object} oOptions Options for FileStore
+ * @param {object} oLogger Logger
  */
-FileStore.prototype._init = function (oOptions) {
+FileStore.prototype._init = function (oOptions, oLogger) {
     // options
     this._oOptions = oOptions;
+    // logger
+    this._oLogger = oLogger;
     // CSRF Token
     this._sCSRFToken = null;
     // SAP Cookie
@@ -47,7 +51,7 @@ FileStore.prototype._init = function (oOptions) {
 
     // remove suffix slashes from server URL
     if (this._oOptions.conn && this._oOptions.conn.server) {
-        this._oOptions.conn.server = this._oOptions.conn.server.replace(/\/$/, '');
+        this._oOptions.conn.server = this._oOptions.conn.server.replace(/\/*$/, '');
     }
 };
 
@@ -222,9 +226,8 @@ FileStore.prototype.calcAppIndex = function (fnCallback) {
  * @param {Array} aFiles Files to be synchronized with server
  * @param {string} sCwd base folder
  * @param {function} fnCallback callback function
- * @param {Object} oGrunt Grunt object
  */
-FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback, oGrunt) {
+FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback) {
     var aArtifactsLocal = util.structureResolve(aFiles, '/');
     var aArtifactsServer = [];
     var aArtifactsSync = [];
@@ -378,9 +381,7 @@ FileStore.prototype.syncFiles = function (aFiles, sCwd, fnCallback, oGrunt) {
                 return oItem;
             });
 
-            if (oGrunt) {
-                oGrunt.verbose.writeln('Artifacts to Sync: ', aArtifactsSync);
-            }
+            me._oLogger.logVerbose('Artifacts to Sync: ', aArtifactsSync);
 
             // sort
             var aDeleteFiles = aArtifactsSync.filter(function (oItem) {
@@ -550,6 +551,7 @@ FileStore.prototype.syncFolder = function (sFolder, sModif, fnCallback) {
         if (oResponse.error) {
             fnCallback(util.createResponseError(oResponse), oResponse);
         } else {
+            me._oLogger.log('NW ABAP UI5 Uploader: folder ' + sFolder + ' ' + sModif + 'd.');
             fnCallback(null, oResponse);
         }
     });
@@ -671,6 +673,7 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
         if (oResponse.error) {
             fnCallback(util.createResponseError(oResponse), oResponse);
         } else {
+            me._oLogger.log('NW ABAP UI5 Uploader: file ' + sFile + ' ' + sModif + 'd.');
             fnCallback(null, oResponse);
         }
     });

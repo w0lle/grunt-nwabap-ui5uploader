@@ -33,6 +33,8 @@
                 "afterColon": true,
                 "mode": "minimum"
             }
-        ]
+        ],
+        "prefer-rest-params": "off",
+        "prefer-spread": "off"
     }
 }
