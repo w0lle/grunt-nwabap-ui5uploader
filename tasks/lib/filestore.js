@@ -28,15 +28,27 @@ var FileStore = function (oOptions) {
      oOptions
      - conn:[server, client, useStrictSSL]
      - auth:[user, pwd]
-     - ui5:[language, transportno, package, bspcontainer (max 15 chars), bspcontainer_text, calc_appindex]
+     - ui5:[language, transportno, package, bspcontainer (max 15 chars w/o ns), bspcontainer_text, calc_appindex]
      */
+    this._init(oOptions);
+};
 
+/**
+ * init
+ * @param {object} oOptions Options for FileStore
+ */
+FileStore.prototype._init = function (oOptions) {
     // options
     this._oOptions = oOptions;
     // CSRF Token
     this._sCSRFToken = null;
     // SAP Cookie
     this._sSAPCookie = null;
+
+    // remove suffix slashes from server URL
+    if (this._oOptions.conn && this._oOptions.conn.server) {
+        this._oOptions.conn.server = this._oOptions.conn.server.replace(/\/$/, '');
+    }
 };
 
 /**
