@@ -1,3 +1,8 @@
+## 0.1.17 (2016-12-12)
+
+### Fixes
+- Error forwarding in case CSRF Token determination fails.
+
 ## 0.1.16 (2016-11-18)
 
 ### General
