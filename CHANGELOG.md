@@ -1,3 +1,8 @@
+## 0.1.18 (2016-12-14)
+
+### Fixes
+- Application index was recalculated independent of option setting.
+
 ## 0.1.17 (2016-12-12)
 
 ### Fixes
