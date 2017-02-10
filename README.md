@@ -32,7 +32,7 @@ grunt.loadNpmTasks('grunt-nwabap-ui5uploader');
 ### ABAP Development Tool Services
 The ABAP Development Tool Services have to be activated on the SAP NetWeaver ABAP System (transaction SICF, path /sap/bc/adt).
 The user used for uploading the sources needs to have the authorization to use the ADT Services and to create/modify BSP applications.
-The plugin is tested with NW 7.40 and NW 7.50 systems.
+The plugin is tested with NW 7.40 and NW 7.5x systems.
 
 ## Task "nwabap_ui5uploader"
 

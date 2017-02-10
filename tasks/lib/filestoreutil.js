@@ -2,7 +2,7 @@
  * grunt-nwabap-ui5uploader
  * https://github.com/pfefferf/grunt-nwabap-ui5uploader
  *
- * Copyright (c) 2016 Florian Pfeffer
+ * Copyright (c) 2017 Florian Pfeffer
  * Licensed under the Apache-2.0 license.
  */
 
@@ -76,17 +76,17 @@ function structureResolve(resolve, sPathStartWith) {
 
     // remove dups
     aResolved = aResolved.sort(function (sVal1, sVal2) {
-            var sA = JSON.stringify(sVal1);
-            var sB = JSON.stringify(sVal2);
+        var sA = JSON.stringify(sVal1);
+        var sB = JSON.stringify(sVal2);
 
-            if (sA === sB) {
-                return 0;
-            } else if (sA <= sB) {
-                return -1;
-            } else {
-                return 1;
-            }
-        })
+        if (sA === sB) {
+            return 0;
+        } else if (sA <= sB) {
+            return -1;
+        } else {
+            return 1;
+        }
+    })
         .filter(function (oItem, iPos) {
             //console.log(aResolved.indexOf(item) + ' -- ' + JSON.stringify(item));
 

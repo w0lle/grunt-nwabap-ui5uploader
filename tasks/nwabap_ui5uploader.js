@@ -2,7 +2,7 @@
  * grunt-nwabap-ui5uploader
  * https://github.com/pfefferf/grunt-nwabap-ui5uploader
  *
- * Copyright (c) 2016 Florian Pfeffer
+ * Copyright (c) 2017 Florian Pfeffer
  * Licensed under the Apache-2.0 license.
  */
 
@@ -11,9 +11,9 @@
 var FileStore = require('./lib/filestore.js');
 var Logger = require('./lib/logger.js');
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
-    grunt.registerMultiTask('nwabap_ui5uploader', 'UI5 source upload to SAP NetWeaver ABAP', function() {
+    grunt.registerMultiTask('nwabap_ui5uploader', 'UI5 source upload to SAP NetWeaver ABAP', function () {
 
         var done = this.async();
 
@@ -77,7 +77,7 @@ module.exports = function(grunt) {
             cwd: oOptions.resources.cwd,
             filter: 'isFile',
             dot: true
-        }, oOptions.resources.src).forEach(function(sFile) {
+        }, oOptions.resources.src).forEach(function (sFile) {
             aFiles.push(sFile);
         });
 
@@ -106,7 +106,7 @@ module.exports = function(grunt) {
 
         var oFileStore = new FileStore(oFileStoreOptions, new Logger(grunt));
 
-        oFileStore.syncFiles(aFiles, oOptions.resources.cwd, function(oError, aArtifactsSync) {
+        oFileStore.syncFiles(aFiles, oOptions.resources.cwd, function (oError, aArtifactsSync) {
 
             if (oError) {
                 grunt.fail.warn(oError);

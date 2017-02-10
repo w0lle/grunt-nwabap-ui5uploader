@@ -1,3 +1,9 @@
+## 0.1.19 (2017-02-10)
+
+### General
+- Adjustment of copyright information (year).
+- Now also tested with NW ABAP 7.51.
+
 ## 0.1.18 (2016-12-14)
 
 ### Fixes
