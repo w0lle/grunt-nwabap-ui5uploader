@@ -1,3 +1,8 @@
+## 0.2.0 (2017-05-29)
+
+### General
+- Grunt dependency updated to 1.0.1, to avoid security vulnerabilities of 0.4.5.
+
 ## 0.1.19 (2017-02-10)
 
 ### General

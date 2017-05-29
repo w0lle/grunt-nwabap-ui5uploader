@@ -14,7 +14,7 @@ Some further information can be found in the [SAP Community](https://blogs.sap.c
 ## Installation and Pre-Conditions
 
 ### Grunt
-This plugin requires Grunt `~0.4.5`
+This plugin requires Grunt `1.0.1`
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you are familiar with that process, you may install this plugin with this command:
 
