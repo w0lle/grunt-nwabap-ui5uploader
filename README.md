@@ -114,6 +114,18 @@ Default: `false`
 Specify if you require the application index (program /UI5/APP_INDEX_CALCULATE) for the application to be recalculated after the BSP application is uploaded.
 Note: This only works with team repository provider version 1.30.x or higher and User Interface Add-On 2.0 for SAP NetWeaver.
 
+#### options.ui5.create_transport
+Type: `Boolean`
+Default: `false`
+
+Set this option to true in case a new transport should be created each time the application is uploaded.
+
+#### options.ui5.transport_text
+Type: `String`
+Optional in case options.ui5.create_transport is set to false.
+
+Text for the new transport to be created.
+
 #### options.resources.cwd
 Type: `String`
 

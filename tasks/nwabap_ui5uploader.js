@@ -2,7 +2,7 @@
  * grunt-nwabap-ui5uploader
  * https://github.com/pfefferf/grunt-nwabap-ui5uploader
  *
- * Copyright (c) 2017 Florian Pfeffer
+ * Copyright (c) 2018 Florian Pfeffer
  * Licensed under the Apache-2.0 license.
  */
 
@@ -62,7 +62,7 @@ module.exports = function (grunt) {
         }
 
         if (oOptions.ui5.create_transport === true && typeof oOptions.ui5.transport_text !== 'string') {
-            grunt.fail.warn('Please specifiy a description to be used for the created transport in create_transport.');
+            grunt.fail.warn('Please specifiy a description to be used for the created transport in option "ui5.transport_text".');
             done();
             return;
         }

@@ -1,3 +1,8 @@
+## 0.2.1 (2018-01-23)
+
+### Features
+- Option `options.ui5.create_transport` and `options.ui5.transport_text` added to be able to create a new transport for each upload. Thanks to [@themasch](https://github.com/themasch) for adding that feature.
+
 ## 0.2.0 (2017-05-29)
 
 ### General
@@ -69,7 +74,7 @@
 ## 0.1.8 (2016-07-25)
 
 ### Features
-- Option `options.ui5.calc_appindex` steers if the SAPUI5 application index is recalculated (program /UI5/APP_INDEX_CALCULATE). Thx to @olirogers for adding this feature.
+- Option `options.ui5.calc_appindex` steers if the SAPUI5 application index is recalculated (program /UI5/APP_INDEX_CALCULATE). Thanks to [@olirogers](https://github.com/olirogers) for adding this feature.
 
 ## 0.1.7 (2016-06-17)
 
