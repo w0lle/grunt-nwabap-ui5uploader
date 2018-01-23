@@ -133,7 +133,7 @@ module.exports = function (grunt) {
             });
         }
 
-        if (oOptions.ui5.transportno === undefined && oOptions.ui5.create_transport === true) {
+        if (oOptions.ui5.package !== '$TMP' && oOptions.ui5.transportno === undefined && oOptions.ui5.create_transport === true) {
             var oTransportManager = new Transports(oFileStoreOptions, oLogger);
             oTransportManager.createTransport(oOptions.ui5.package, oOptions.ui5.transport_text, function (oError, sTransportNo) {
                 if (oError) {
