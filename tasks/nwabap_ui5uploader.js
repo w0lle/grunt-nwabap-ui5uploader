@@ -9,6 +9,7 @@
 'use strict';
 
 var FileStore = require('./lib/filestore.js');
+var Transports = require('./lib/transports');
 var Logger = require('./lib/logger.js');
 
 module.exports = function (grunt) {
@@ -54,8 +55,14 @@ module.exports = function (grunt) {
             return;
         }
 
-        if (oOptions.ui5.package !== '$TMP' && !oOptions.ui5.transportno) {
+        if (oOptions.ui5.package !== '$TMP' && !oOptions.ui5.transportno && oOptions.ui5.create_transport !== true) {
             grunt.fail.warn('For packages <> "$TMP" a transport number is necessary.');
+            done();
+            return;
+        }
+
+        if (oOptions.ui5.create_transport === true && typeof oOptions.ui5.transport_text !== 'string') {
+            grunt.fail.warn('Please specifiy a description to be used for the created transport in create_transport.');
             done();
             return;
         }
@@ -104,16 +111,42 @@ module.exports = function (grunt) {
             }
         };
 
-        var oFileStore = new FileStore(oFileStoreOptions, new Logger(grunt));
+        var oLogger = new Logger(grunt);
 
-        oFileStore.syncFiles(aFiles, oOptions.resources.cwd, function (oError, aArtifactsSync) {
+        /**
+         *
+         * @param {object} oFileStoreOptions
+         * @param {object} oLogger
+         * @param {object} aFiles
+         * @param {object} oOptions
+         */
+        function syncFiles(oFileStoreOptions, oLogger, aFiles, oOptions) {
+            var oFileStore = new FileStore(oFileStoreOptions, oLogger);
 
-            if (oError) {
-                grunt.fail.warn(oError);
-            }
+            oFileStore.syncFiles(aFiles, oOptions.resources.cwd, function (oError, aArtifactsSync) {
 
-            done();
-        });
+                if (oError) {
+                    grunt.fail.warn(oError);
+                }
+
+                done();
+            });
+        }
+
+        if (oOptions.ui5.package !== '$TMP' && oOptions.ui5.transportno === undefined && oOptions.ui5.create_transport === true) {
+            var oTransportManager = new Transports(oFileStoreOptions, oLogger);
+            oTransportManager.createTransport(oOptions.ui5.package, oOptions.ui5.transport_text, function (oError, sTransportNo) {
+                if (oError) {
+                    grunt.fail.error(oError);
+                    return done();
+                }
+
+                oFileStoreOptions.ui5.transportno = sTransportNo;
+                syncFiles(oFileStoreOptions, oLogger, aFiles, oOptions);
+            });
+        } else {
+            syncFiles(oFileStoreOptions, oLogger, aFiles, oOptions);
+        }
     });
 
 };
