@@ -207,6 +207,42 @@ grunt.initConfig({
 });
 ```
 
+#### Upload to a transport tracked package, creating a new transport for each upload
+
+```js
+var sUser = grunt.option('user');
+var sPwd = grunt.option('pwd');
+
+grunt.initConfig({
+  nwabap_ui5uploader: {
+    options: {
+      conn: {
+        server: 'http://myserver:8000',
+      },
+      auth: {
+        user: sUser,
+        pwd: sPwd
+      }
+    },
+    upload_build: {
+      options: {
+        ui5: {
+           package: 'ZZ_UI5_REPO',
+           bspcontainer: 'ZZ_UI5_TRACKED',
+           bspcontainer_text: 'UI5 upload',
+           create_transport: true,
+           transport_text: 'Transport for ZZ_UI5_TRACKED container'
+        },
+        resources: {
+          cwd: 'build-folder',
+          src: '**/*.*'
+        }
+      }
+    }
+  }
+});
+```
+
 #### Upload to different servers
 
 ```js
