@@ -137,14 +137,12 @@ module.exports = function (grunt) {
             var oTransportManager = new Transports(oFileStoreOptions, oLogger);
             if (oOptions.ui5.transport_use_user_match) {
                 oTransportManager.determineExistingTransport(oOptions.ui5.transport_text, function (oError, sTransportNo) {
-                    console.log("TransportNo", sTransportNo)
                     if (sTransportNo) {
                         oFileStoreOptions.ui5.transportno = sTransportNo;
                         syncFiles(oFileStoreOptions, oLogger, aFiles, oOptions);
                     } else if (oOptions.ui5.create_transport === true) {
                         oTransportManager.createTransport(oOptions.ui5.package, oOptions.ui5.transport_text, function (oError, sTransportNo) {
                             if (oError) {
-                                console.log(oError);
                                 grunt.fail.error(oError);
                                 return done();
                             }
@@ -152,8 +150,7 @@ module.exports = function (grunt) {
                             syncFiles(oFileStoreOptions, oLogger, aFiles, oOptions);
                         });
                     } else {
-                        var oError = new Error('No transport found and create transport was disabled!')
-                        console.log(oError);
+                        oError = new Error('No transport found and create transport was disabled!');
                         grunt.fail.error(oError);
                         return done();
                     }
@@ -161,7 +158,6 @@ module.exports = function (grunt) {
             } else if (oOptions.ui5.create_transport === true) {
                 oTransportManager.createTransport(oOptions.ui5.package, oOptions.ui5.transport_text, function (oError, sTransportNo) {
                     if (oError) {
-                        console.log(oError);
                         grunt.fail.error(oError);
                         return done();
                     }
@@ -171,7 +167,6 @@ module.exports = function (grunt) {
                 });
             } else {
                 var oError = new Error('No transport configured but create transport and user match was disabled!');
-                console.log(oError);
                 grunt.fail.error(oError);
                 return done();
             }
