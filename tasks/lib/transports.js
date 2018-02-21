@@ -32,19 +32,19 @@ function Transports(oOptions, oLogger) {
 }
 
 Transports.prototype.createTransport = function (sPackageName, sRequestText, fnCallback) {
-var sPayload = this.getCreateTransportPayload(sPackageName, sRequestText);
+    var sPayload = this.getCreateTransportPayload(sPackageName, sRequestText);
 
-var sUrl = this.client.buildUrl(CTS_BASE_URL);
-this.client._determineCSRFToken(function (x) {
-    var sRequest = unirest('POST', sUrl, {}, sPayload);
-    this.client.sendRequest(sRequest, function (oResponse) {
-        if (oResponse.status === fsutil.HTTPSTAT.ok) {
-            fnCallback(null, oResponse.body.split('/').pop());
-            return;
-        }
-        fnCallback(new Error(fsutil.createResponseError(oResponse)));
-    });
-}.bind(this));
+    var sUrl = this.client.buildUrl(CTS_BASE_URL);
+    this.client._determineCSRFToken(function (x) {
+        var sRequest = unirest('POST', sUrl, {}, sPayload);
+        this.client.sendRequest(sRequest, function (oResponse) {
+            if (oResponse.status === fsutil.HTTPSTAT.ok) {
+                fnCallback(null, oResponse.body.split('/').pop());
+                return;
+            }
+            fnCallback(new Error(fsutil.createResponseError(oResponse)));
+        });
+    }.bind(this));
 };
 
 /**
@@ -71,17 +71,17 @@ Transports.prototype.determineExistingTransport = function (transportText, fnCal
 
 Transports.prototype.getCreateTransportPayload = function (sPackageName, sRequestText) {
     var sTemplate = '<?xml version="1.0" encoding="UTF-8"?>' +
-    '<asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">' +
-    '<asx:values>' +
-    '<DATA>' +
-    '<OPERATION>I</OPERATION>' +
-    '<DEVCLASS>%s</DEVCLASS>' +
-    '<REQUEST_TEXT>%s</REQUEST_TEXT>' +
-    '</DATA>' +
-    '</asx:values>' +
-    '</asx:abap>';
+        '<asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">' +
+        '<asx:values>' +
+        '<DATA>' +
+        '<OPERATION>I</OPERATION>' +
+        '<DEVCLASS>%s</DEVCLASS>' +
+        '<REQUEST_TEXT>%s</REQUEST_TEXT>' +
+        '</DATA>' +
+        '</asx:values>' +
+        '</asx:abap>';
 
-return util.format(sTemplate, sPackageName, sRequestText);
+    return util.format(sTemplate, sPackageName, sRequestText);
 };
 
 module.exports = Transports;

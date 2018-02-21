@@ -128,7 +128,11 @@ Text for the new transport to be created.
 
 #### options.ui5.transport_use_user_match
 Type: `Boolean`
-Optional, if set to true, it will be tried to find a transport request of the given user. If no transport is found and and `create_transport` is enabled a new one should be created. Best way is to use a single user only for the uploading, so that you can transport the requests of him on a regular basis.
+Optional, if set to true, it will be tried to find a transport request of the given user. If no transport is found and `create_transport` is enabled a new one should be created and used for further file uploads.
+
+#### options.ui5.transport_use_locked
+Type: `Boolean`
+Optional, if set to true and a file upload failed due the BSP application is locked in another transport, the old (original one) one will be used to upload the files.
 
 #### options.resources.cwd
 Type: `String`

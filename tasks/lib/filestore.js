@@ -672,14 +672,16 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
 
     me._sendRequest(oRequest, function (oResponse) {
         if (oResponse.error) {
-            var aMatched = oResponse.body.match(/.{3}K\d{6}/g);
-            if (aMatched && aMatched.length > 0) {
-                me._oLogger.log('NW ABAP UI5 Uploader: Warning: the current BSP Application was already locked in ' + aMatched[0] + ' . Now we are using transport no ' + aMatched[0] + ' instead of ' + me._oOptions.ui5.transportno);
-                me._oOptions.ui5.transportno = aMatched[0];
-                me.syncFile(sFile, sModif, sCwd, function (a, b) {
-                    fnCallback(a, b);
-                });
-                return;
+            if (me._oOptions.ui5.transport_use_locked) {
+                var aMatched = oResponse.body.match(/.{3}K\d{6}/g);
+                if (aMatched && aMatched.length > 0) {
+                    me._oLogger.log('NW ABAP UI5 Uploader: Warning: the current BSP Application was already locked in ' + aMatched[0] + '. Now we are using transport ' + aMatched[0] + ' instead of ' + me._oOptions.ui5.transportno + '.');
+                    me._oOptions.ui5.transportno = aMatched[0];
+                    me.syncFile(sFile, sModif, sCwd, function (a, b) {
+                        fnCallback(a, b);
+                    });
+                    return;
+                }
             }
             fnCallback(util.createResponseError(oResponse), oResponse);
         } else {

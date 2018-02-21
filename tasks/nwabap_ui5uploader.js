@@ -107,6 +107,8 @@ module.exports = function (grunt) {
                 package: oOptions.ui5.package,
                 bspcontainer: oOptions.ui5.bspcontainer,
                 bspcontainer_text: oOptions.ui5.bspcontainer_text,
+                transport_use_user_match: oOptions.ui5.transport_use_user_match,
+                transport_use_locked: oOptions.ui5.transport_use_locked,
                 calc_appindex: !!oOptions.ui5.calc_appindex
             }
         };
@@ -133,28 +135,37 @@ module.exports = function (grunt) {
             });
         }
 
+        /**
+         * @description Uploads the files with an transports which does the user own.
+         * @param {Object} oTransportManager - Transport manager
+         */
+        function uploadWithTransportUserMatch(oTransportManager) {
+            oTransportManager.determineExistingTransport(oOptions.ui5.transport_text, function (oError, sTransportNo) {
+                if (sTransportNo) {
+                    oFileStoreOptions.ui5.transportno = sTransportNo;
+                    syncFiles(oFileStoreOptions, oLogger, aFiles, oOptions);
+                } else if (oOptions.ui5.create_transport === true) {
+                    oTransportManager.createTransport(oOptions.ui5.package, oOptions.ui5.transport_text, function (oError, sTransportNo) {
+                        if (oError) {
+                            grunt.fail.error(oError);
+                            return done();
+                        }
+                        oFileStoreOptions.ui5.transportno = sTransportNo;
+                        syncFiles(oFileStoreOptions, oLogger, aFiles, oOptions);
+                    });
+                } else {
+                    oError = new Error('No transport found and create transport was disabled!');
+                    grunt.fail.error(oError);
+                    return done();
+                }
+            });
+        }
+
         if (oOptions.ui5.package !== '$TMP' && oOptions.ui5.transportno === undefined) {
             var oTransportManager = new Transports(oFileStoreOptions, oLogger);
             if (oOptions.ui5.transport_use_user_match) {
-                oTransportManager.determineExistingTransport(oOptions.ui5.transport_text, function (oError, sTransportNo) {
-                    if (sTransportNo) {
-                        oFileStoreOptions.ui5.transportno = sTransportNo;
-                        syncFiles(oFileStoreOptions, oLogger, aFiles, oOptions);
-                    } else if (oOptions.ui5.create_transport === true) {
-                        oTransportManager.createTransport(oOptions.ui5.package, oOptions.ui5.transport_text, function (oError, sTransportNo) {
-                            if (oError) {
-                                grunt.fail.error(oError);
-                                return done();
-                            }
-                            oFileStoreOptions.ui5.transportno = sTransportNo;
-                            syncFiles(oFileStoreOptions, oLogger, aFiles, oOptions);
-                        });
-                    } else {
-                        oError = new Error('No transport found and create transport was disabled!');
-                        grunt.fail.error(oError);
-                        return done();
-                    }
-                });
+                uploadWithTransportUserMatch(oTransportManager);
+
             } else if (oOptions.ui5.create_transport === true) {
                 oTransportManager.createTransport(oOptions.ui5.package, oOptions.ui5.transport_text, function (oError, sTransportNo) {
                     if (oError) {
