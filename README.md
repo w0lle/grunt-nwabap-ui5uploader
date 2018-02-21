@@ -126,6 +126,10 @@ Optional in case options.ui5.create_transport is set to false.
 
 Text for the new transport to be created.
 
+#### options.ui5.transport_use_user_match
+Type: `Boolean`
+Optional, if set to true, it will be tried to find a transport request of the given user. If no transport is found and and `create_transport` is enabled a new one should be created. Best way is to use a single user only for the uploading, so that you can transport the requests of him on a regular basis.
+
 #### options.resources.cwd
 Type: `String`
 
@@ -293,6 +297,43 @@ grunt.initConfig({
         }
       }
     }    
+  }
+});
+```
+
+#### Create and reuse a transport request
+
+```js
+var sUser = grunt.option('user');
+var sPwd = grunt.option('pwd');
+
+grunt.initConfig({
+  nwabap_ui5uploader: {
+    options: {
+      conn: {
+        server: 'http://myserver:8000',
+      },
+      auth: {
+        user: sUser,
+        pwd: sPwd
+      }
+    },
+    upload_build: {
+      options: {
+        ui5: {
+           package: 'ZZ_UI5_REPO',
+           bspcontainer: 'ZZ_UI5_TRACKED',
+           bspcontainer_text: 'UI5 upload',
+           create_transport: true,
+           transport_use_user_match: true,
+           transport_text: 'Transport for ZZ_UI5_TRACKED container'
+        },
+        resources: {
+          cwd: 'build-folder',
+          src: '**/*.*'
+        }
+      }
+    }
   }
 });
 ```
