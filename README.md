@@ -142,7 +142,7 @@ Optional, if set to true and a file upload failed due the BSP application is loc
 #### options.resources.cwd
 Type: `String`
 
-Defines the base folder which contains the sources (for instance 'build'). It should be avoided to use everything from the ``webapp`` folder, because some directories in it should not be packaged and uploaded into a BSP application. To create a build, use another grunt task to copy the relevant files to the ``build`` folder. In addition for instance you can use the [openui5_preload] (https://github.com/SAP/grunt-openui5#openui5_preload) task from the ``grunt-openui5`` plugin to create a component preload file.
+Defines the base folder which contains the sources (for instance 'build'). It should be avoided to use everything from the ``webapp`` folder, because some directories in it should not be packaged and uploaded into a BSP application. To create a build, use another grunt task to copy the relevant files to the ``build`` folder. In addition for instance you can use the [openui5_preload](https://github.com/SAP/grunt-openui5#openui5_preload) task from the ``grunt-openui5`` plugin to create a component preload file.
 
 #### options.resources.src
 Type: `String` or `array of String` 
