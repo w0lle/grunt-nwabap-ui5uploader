@@ -28,9 +28,9 @@
     "test": "grunt eslint"
   },
   "devDependencies": {
-    "eslint-config-google": "^0.7.0",
+    "eslint-config-google": "^0.9.1",
     "grunt": "^1.0.1",
-    "grunt-eslint": "^19.0.0"
+    "grunt-eslint": "^20.1.0"
   },
   "keywords": [
     "gruntplugin",
@@ -40,9 +40,9 @@
     "OpenUI5"
   ],
   "dependencies": {
-    "async": "^1.5.2",
+    "async": "^2.6.0",
     "isbinaryfile": "^3.0.0",
     "unirest": "^0.5.1",
-    "xmldoc": "^0.4.0"
+    "xmldoc": "^1.1.0"
   }
 }
