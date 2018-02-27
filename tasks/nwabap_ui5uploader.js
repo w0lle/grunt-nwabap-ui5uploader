@@ -107,8 +107,8 @@ module.exports = function (grunt) {
                 package: oOptions.ui5.package,
                 bspcontainer: oOptions.ui5.bspcontainer,
                 bspcontainer_text: oOptions.ui5.bspcontainer_text,
-                transport_use_user_match: oOptions.ui5.transport_use_user_match,
-                transport_use_locked: oOptions.ui5.transport_use_locked,
+                transport_use_user_match: !!oOptions.ui5.transport_use_user_match,
+                transport_use_locked: !!oOptions.ui5.transport_use_locked,
                 calc_appindex: !!oOptions.ui5.calc_appindex
             }
         };

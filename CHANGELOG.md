@@ -1,3 +1,11 @@
+## 0.2.2 (2018-02-27)
+
+### General
+- NPM package dependencies updated.
+
+### Features
+- Options `options.ui5.transport_use_user_match` and `options.ui5.transport_use_locked` added for specific cases. These options allow to reuse an existing not released transport for a user or the usage of a not released transport by which the UI5 application BSP container is locked. Thanks to [@mxschmitt](https://github.com/mxschmitt) for adding these options.
+
 ## 0.2.1 (2018-01-23)
 
 ### Features

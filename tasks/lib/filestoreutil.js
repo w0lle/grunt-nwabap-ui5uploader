@@ -88,8 +88,6 @@ function structureResolve(resolve, sPathStartWith) {
         }
     })
         .filter(function (oItem, iPos) {
-            //console.log(aResolved.indexOf(item) + ' -- ' + JSON.stringify(item));
-
             if (iPos > 0) {
                 return JSON.stringify(aResolved[iPos - 1]) !== JSON.stringify(oItem);
             } else {
