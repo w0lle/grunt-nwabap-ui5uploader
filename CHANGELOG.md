@@ -1,3 +1,8 @@
+## 0.2.3 (2018-03-13)
+
+### Fixes
+- In case of using the parameter to use a locked transport, an error occurred if no response body was available when the check was done for a locked transport.
+
 ## 0.2.2 (2018-02-27)
 
 ### General
