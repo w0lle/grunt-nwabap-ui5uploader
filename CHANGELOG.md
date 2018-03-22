@@ -1,3 +1,8 @@
+## 0.2.4 (2018-03-22)
+
+### Features
+- Reconnect if request was aborted due to a syscall error.
+
 ## 0.2.3 (2018-03-13)
 
 ### Fixes
