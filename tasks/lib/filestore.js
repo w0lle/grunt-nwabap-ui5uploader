@@ -14,6 +14,7 @@ var XMLDocument = require('xmldoc').XmlDocument;
 var util = require('./filestoreutil');
 var fs = require('fs');
 var isBinaryFile = require('isbinaryfile');
+var backoff = require('backoff');
 
 var FILESTORE_BASE_URL = '/sap/bc/adt/filestore/ui5-bsp/objects';
 var SLASH_ESCAPED = '%2f';
@@ -91,7 +92,23 @@ FileStore.prototype._sendRequest = function (oRequest, fnRequestCallback) {
         });
     }
 
-    oRequest.end(fnRequestCallback);
+    var call = backoff.call(oRequest.end, function (oResponse) {
+        fnRequestCallback(oResponse);
+    });
+
+    call.retryIf(function (oResponse) {
+        if (oResponse.error.syscall !== undefined) {
+            me._oLogger.log('NW ABAP UI5 Uploader: Connection error has occurred, retrying (' + call.getNumRetries() + '): ' + JSON.stringify(oResponse.error));
+            return true;
+        }
+        return false;
+    });
+
+    call.setStrategy(new backoff.ExponentialStrategy());
+
+    call.failAfter(10);
+
+    call.start();
 };
 
 /**

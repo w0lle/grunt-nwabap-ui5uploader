@@ -10,6 +10,7 @@
 
 var unirest = require('unirest');
 var util = require('./filestoreutil');
+var backoff = require('backoff');
 var ADT_BASE_URL = '/sap/bc/adt/';
 
 
@@ -81,7 +82,7 @@ AdtClient.prototype.sendRequest = function (oRequest, fnRequestCallback) {
     var me = this;
 
     if (me._oOptions.auth) {
-        oRequest.auth({user: me._oOptions.auth.user, pass: me._oOptions.auth.pwd});
+        oRequest.auth({ user: me._oOptions.auth.user, pass: me._oOptions.auth.pwd });
     }
 
     oRequest.strictSSL(me._oOptions.conn.useStrictSSL);
@@ -106,7 +107,24 @@ AdtClient.prototype.sendRequest = function (oRequest, fnRequestCallback) {
         oRequest.header('Cookie', this._sSAPCookie);
     }
 
-    oRequest.end(fnRequestCallback);
+    var call = backoff.call(oRequest.end, function (oResponse) {
+        fnRequestCallback(oResponse);
+    });
+
+    call.retryIf(function (oResponse) {
+        if (oResponse.error.syscall !== undefined) {
+            me._oLogger.log('NW ABAP UI5 Uploader: Connection error has occurred, retrying (' + call.getNumRetries() + '): ' + JSON.stringify(oResponse.error));
+            return true;
+        }
+        return false;
+    });
+
+    call.setStrategy(new backoff.ExponentialStrategy());
+
+    call.failAfter(10);
+
+    call.start();
+
 };
 
 module.exports = AdtClient;
