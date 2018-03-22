@@ -119,7 +119,10 @@ AdtClient.prototype.sendRequest = function (oRequest, fnRequestCallback) {
         return false;
     });
 
-    call.setStrategy(new backoff.ExponentialStrategy());
+    call.setStrategy(new backoff.ExponentialStrategy({
+        initialDelay: 500,
+        maxDelay: 50000
+    }));
 
     call.failAfter(10);
 
