@@ -1,7 +1,12 @@
+## 0.2.6 (2018-04-05)
+
+### Fixes
+- Fixed issues for `create_transport` option (thanks to [stockbal](https://github.com/stockbal)).
+
 ## 0.2.5 (2018-03-22)
 
 ### Fixes
-- Increased the backoff reconnect time interval
+- Increased the backoff reconnect time interval.
 
 ## 0.2.4 (2018-03-22)
 
