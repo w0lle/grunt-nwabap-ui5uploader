@@ -59,7 +59,10 @@ AdtClient.prototype._determineCSRFToken = function (fnCallback) {
     }
 
     var oRequest = unirest.get(this.buildUrl(ADT_BASE_URL + 'discovery'));
-    oRequest.header('X-CSRF-Token', 'Fetch');
+    oRequest.headers({
+        'X-CSRF-Token': 'Fetch',
+        'accept': '*/*'
+    });
     this.sendRequest(oRequest, function (oResponse) {
         if (oResponse.statusCode === util.HTTPSTAT.ok) {
             this._sCSRFToken = oResponse.headers['x-csrf-token'];

@@ -147,7 +147,7 @@ module.exports = function (grunt) {
                 } else if (oOptions.ui5.create_transport === true) {
                     oTransportManager.createTransport(oOptions.ui5.package, oOptions.ui5.transport_text, function (oError, sTransportNo) {
                         if (oError) {
-                            grunt.fail.error(oError);
+                            grunt.fail.fatal(oError);
                             return done();
                         }
                         oFileStoreOptions.ui5.transportno = sTransportNo;
@@ -155,7 +155,7 @@ module.exports = function (grunt) {
                     });
                 } else {
                     oError = new Error('No transport found and create transport was disabled!');
-                    grunt.fail.error(oError);
+                    grunt.fail.fatal(oError);
                     return done();
                 }
             });
@@ -169,7 +169,7 @@ module.exports = function (grunt) {
             } else if (oOptions.ui5.create_transport === true) {
                 oTransportManager.createTransport(oOptions.ui5.package, oOptions.ui5.transport_text, function (oError, sTransportNo) {
                     if (oError) {
-                        grunt.fail.error(oError);
+                        grunt.fail.fatal(oError);
                         return done();
                     }
 
@@ -178,7 +178,7 @@ module.exports = function (grunt) {
                 });
             } else {
                 var oError = new Error('No transport configured but create transport and user match was disabled!');
-                grunt.fail.error(oError);
+                grunt.fail.fatal(oError);
                 return done();
             }
         } else {

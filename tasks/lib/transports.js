@@ -36,8 +36,9 @@ Transports.prototype.createTransport = function (sPackageName, sRequestText, fnC
 
     var sUrl = this.client.buildUrl(CTS_BASE_URL);
     this.client._determineCSRFToken(function (x) {
-        var sRequest = unirest('POST', sUrl, {}, sPayload);
-        this.client.sendRequest(sRequest, function (oResponse) {
+        var oRequest = unirest('POST', sUrl, {}, sPayload);
+        oRequest.header('accept', '*/*');
+        this.client.sendRequest(oRequest, function (oResponse) {
             if (oResponse.status === fsutil.HTTPSTAT.ok) {
                 fnCallback(null, oResponse.body.split('/').pop());
                 return;
