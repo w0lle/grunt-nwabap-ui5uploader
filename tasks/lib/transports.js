@@ -57,6 +57,7 @@ Transports.prototype.createTransport = function (sPackageName, sRequestText, fnC
 Transports.prototype.determineExistingTransport = function (transportText, fnCallback) {
     var sUrl = this.client.buildUrl(CTS_BASE_URL + '?_action=FIND&trfunction=K');
     var oRequest = unirest('GET', sUrl, {});
+    oRequest.header('accept', '*/*');
     this.client.sendRequest(oRequest, function (oResponse) {
         if (oResponse.status === fsutil.HTTPSTAT.ok) {
             if (!oResponse.body) {
