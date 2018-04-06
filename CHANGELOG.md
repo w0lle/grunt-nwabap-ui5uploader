@@ -1,3 +1,8 @@
+## 0.2.7 (2018-04-06)
+
+## Fixes
+- Fixed issues for `transport_use_user_match' option (thanks to [stockbal](https://github.com/stockbal)).
+
 ## 0.2.6 (2018-04-05)
 
 ### Fixes
