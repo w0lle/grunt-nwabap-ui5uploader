@@ -594,11 +594,17 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
     var sUrl = null;
     var oFileContent = null;
     var bBinaryFile = false;
+    var sFileCharset = 'UTF-8';
 
     if (sModif === util.MODIDF.create || sModif === util.MODIDF.update) {
         oFileContent = fs.readFileSync(sCwd + sFile);
 
         bBinaryFile = (isBinaryFile.sync(sCwd + sFile)) ? true : false;
+
+        // .properties-files have to be uploaded with ISO-8859-1 charset
+        if (/\.properties$/.test(sFile)) {
+            sFileCharset = 'ISO-8859-1';
+        }
     }
 
     switch (sModif) {
@@ -609,7 +615,7 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                 '&isBinary=' + bBinaryFile +
                 '&name=' + encodeURIComponent(util.splitIntoPathAndObject(sFile).obj) +
                 '&devclass=' + encodeURIComponent(me._oOptions.ui5.package) +
-                '&charset=UTF-8';
+                '&charset=' + sFileCharset;
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
@@ -638,7 +644,7 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
                 '/' + encodeURIComponent(me._oOptions.ui5.bspcontainer) + encodeURIComponent(sFile) +
                 '/content' +
                 '?isBinary=' + bBinaryFile +
-                '&charset=UTF-8';
+                '&charset=' + sFileCharset;
 
             if (me._oOptions.ui5.transportno) {
                 sUrl += '&corrNr=' + encodeURIComponent(me._oOptions.ui5.transportno);
