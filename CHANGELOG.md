@@ -1,6 +1,11 @@
+## 0.2.8 (2018-05-02)
+
+### Fixes
+- Fixed issue that "properties" files were uploaded with UTF-8 charset instead of ISO-8859-1 charset (thanks to [stockbal](https://github.com/stockbal)).
+
 ## 0.2.7 (2018-04-06)
 
-## Fixes
+### Fixes
 - Fixed issues for `transport_use_user_match' option (thanks to [stockbal](https://github.com/stockbal)).
 
 ## 0.2.6 (2018-04-05)
