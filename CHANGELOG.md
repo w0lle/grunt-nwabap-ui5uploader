@@ -1,3 +1,8 @@
+## 0.2.9 (2018-06-01)
+
+### Fixes
+- Removal of ISO-8859-1 to avoid side issues when project is edited in different editors.
+
 ## 0.2.8 (2018-05-02)
 
 ### Fixes
