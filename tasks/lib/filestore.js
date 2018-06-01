@@ -600,11 +600,6 @@ FileStore.prototype.syncFile = function (sFile, sModif, sCwd, fnCallback) {
         oFileContent = fs.readFileSync(sCwd + sFile);
 
         bBinaryFile = (isBinaryFile.sync(sCwd + sFile)) ? true : false;
-
-        // .properties-files have to be uploaded with ISO-8859-1 charset
-        if (/\.properties$/.test(sFile)) {
-            sFileCharset = 'ISO-8859-1';
-        }
     }
 
     switch (sModif) {
