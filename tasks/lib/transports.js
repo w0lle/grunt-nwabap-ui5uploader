@@ -14,6 +14,7 @@ var unirest = require('unirest');
 var CTS_BASE_URL = '/sap/bc/adt/cts/transports';
 var AdtClient = require('./adt_client');
 var XMLDocument = require('xmldoc').XmlDocument;
+var Xml2json = require('xml2js');
 
 /**
  * creates and releases transport requests
@@ -63,8 +64,16 @@ Transports.prototype.determineExistingTransport = function (transportText, fnCal
             if (!oResponse.body) {
                 return fnCallback(null, null);
             }
-            var oParsed = new XMLDocument(oResponse.body);
-            var transportNo = oParsed.valueWithPath('asx:values.DATA.CTS_REQ_HEADER.TRKORR');
+            var oParser = new Xml2json.Parser();
+            var transportNo;
+            oParser.parseString(oResponse.body, function(err,result){
+                var aTransports = result["asx:abap"]["asx:values"][0]["DATA"][0]["CTS_REQ_HEADER"];
+                aTransports.forEach(function(e,v){
+                    if(e["AS4TEXT"][0] == transportText){
+                        transportNo = e["TRKORR"][0];
+                    }
+                });
+            });
             return fnCallback(null, transportNo);
         }
         fnCallback(new Error(fsutil.createResponseError(oResponse)));
